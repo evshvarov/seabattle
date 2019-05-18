@@ -1,0 +1,5 @@
+{
+    "objectscript.conn.port": 52778,
+    "objectscript.conn.active": true,
+    "objectscript.conn.ns": "SEABATTLE"
+}

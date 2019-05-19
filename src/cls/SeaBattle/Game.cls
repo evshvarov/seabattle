@@ -5,27 +5,33 @@ Parameter BoardRange = 5;
 
 Parameter Rounds = 5;
 
+Parameter ShipsStorage = "^Ships";
+
+Parameter BoardStorage = "^Board";
+
 ClassMethod Run() As %Status
 {
+   w #,"Welcome to 'SEA BATTLE' game!"
+   w !,"There is a hidden ship. Try to find it in ",..#Rounds," rounds. Let's go!"
    do ..SetupGame() 
     for i=1:1:..#Rounds {
-        WRITE !,"Round ",i
-        READ !,"Please enter x:",x
-        READ !,"And y:",y
+        write !,"Round ",i
+        read !,"Please enter x:",x
+        read !,"And y:",y
         do ..HitBoard(x,y)
         do ..PrintBoard()
         if ..CheckShip(x,y) {
-            WRITE !,"You sunk the ship!"
-            QUIT 
+            write !,"You've sunk the ship! You win!"
+            quit 
         }
-        
-        READ !,"You missed. Try again",x
+        w !,"You missed. Try again"
     }
+    w !, "GAME OVER"
 }
 
 ClassMethod HitBoard(x, y) As %Status
 {
-    set ^Board(x,y)="X"
+    set @..#BoardStorage@(x,y)="X"
 }
 
 ClassMethod CheckShip(x, y) As %Boolean
@@ -36,34 +42,35 @@ ClassMethod CheckShip(x, y) As %Boolean
 
 ClassMethod SetupGame() As %Status
 {
-    k ^Board
+    s ad=..#BoardStorage
+    k @..#BoardStorage
     for x=1:1:..#BoardRange {
         for y=1:1:..#BoardRange {
-            set ^Board(x,y)="O"
+            set @..#BoardStorage@(x,y)="O"
         }
     }
-    Do ..HideShip()
+    do ..HideShip()
 }
 
 ClassMethod HideShip() As %Status
 {
     kill ^Ships
-    Set ^Ships($RANDOM(..#BoardRange)+1,$RANDOM(..#BoardRange)+1)=""
+    set ^Ships($RANDOM(..#BoardRange)+1,$RANDOM(..#BoardRange)+1)=""
     #; zw ^Ships
 }
 
 ClassMethod PrintBoard() As %Status
 {
-    set Board=$Na(^Board)
-    SET next=$QUERY(@Board@(""))
-    W !
-    FOR {
-        SET i=$I(i)
-        QUIT:next=""
+    set Board=$Name(@..#BoardStorage)
+    set next=$Query(@Board@(""))
+    w !
+    for {
+        set i=$I(i)
+        quit:next=""
         w:'(i#..#BoardRange=1) ","
-        WRITE @next
+        write @next
         if '(i#..#BoardRange) w !
-        SET next=$QUERY(@next)
+        set next=$Query(@next)
     }
 }
 

@@ -1,4 +1,4 @@
-Class SeaBattle.Game
+Class eshvarov.sample.SeaBattle.Game
 {
 
 Parameter BoardRange = 5;

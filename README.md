@@ -7,6 +7,10 @@ Class Game has two parameters:
 BoardRange - Sea battle the field range
 Rounds - the number of rounds to try
 
+# Installation with ZPM
+
+zpm:USER>install eshvarov-sample-seabattle
+
 # Installation with Docker
 
 Make sure you have Docker and Git installed

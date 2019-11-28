@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-  <Document name="eshvarov-sample-seabattle.MODULE">
+  <Document name="eshvarov-sample-seabattle.ZPM">
     <Module>
       <Name>eshvarov-sample-seabattle</Name>
-      <Version>1.0.3</Version>
+      <Version>1.0.4</Version>
       <Packaging>module</Packaging>
       <SourcesRoot>src</SourcesRoot>
       <Resource Name="eshvarov.sample.SeaBattle.PKG"/>

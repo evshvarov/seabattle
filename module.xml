@@ -3,7 +3,8 @@
   <Document name="eshvarov-sample-seabattle.ZPM">
     <Module>
       <Name>eshvarov-sample-seabattle</Name>
-      <Version>1.0.4</Version>
+      <Version>1.0.5</Version>
+      <Description>Simple terminal game an approach to "Sea Battle". Example of simple ObjectScript method calls and terminal interaction</Description>
       <Packaging>module</Packaging>
       <SourcesRoot>src</SourcesRoot>
       <Resource Name="eshvarov.sample.SeaBattle.PKG"/>

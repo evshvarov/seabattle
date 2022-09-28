@@ -25,7 +25,7 @@ Open IRIS terminal:
 ```
 $ docker-compose exec iris iris session iris
 USER>zn "SEABATTLE"
-SEABATTLE>do ##class(SeaBattle.Game).Run()
+SEABATTLE>do ##class(eshvarov.sample.SeaBattle.Game).Run()
 ```
 
 

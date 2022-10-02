@@ -24,8 +24,7 @@ This will create the container and installs code into "SEABATTLE" namespace
 Open IRIS terminal:
 ```
 $ docker-compose exec iris iris session iris
-USER>zn "SEABATTLE"
-SEABATTLE>do ##class(eshvarov.sample.SeaBattle.Game).Run()
+USER>do ##class(eshvarov.sample.SeaBattle.Game).Run()
 ```
 
 

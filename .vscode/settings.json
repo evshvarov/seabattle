@@ -1,5 +1,21 @@
 {
-    "objectscript.conn.port": 52781,
-    "objectscript.conn.active": true,
-    "objectscript.conn.ns": "SEABATTLE"
+    "files.associations": {
+    
+        "Dockerfile*": "dockerfile",
+        "iris.script": "objectscript"
+      },
+    "objectscript.conn" :{
+      "active":true,
+      "ns": "USER",
+      "username": "_SYSTEM",
+      "password": "SYS",
+      "docker-compose": {
+        "service": "iris",
+        "internalPort": 52773
+      },
+    "links" :{
+      "UnitTest Portal" :"${serverUrl}/csp/sys/%25UnitTest.Portal.Home.cls?$NAMESPACE=IRISAPP"
+    }
+    }
+
 }

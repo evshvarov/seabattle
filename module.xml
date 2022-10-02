@@ -9,6 +9,7 @@
       <SourcesRoot>src</SourcesRoot>
       <Resource Name="eshvarov.sample.SeaBattle.PKG"/>
       <SystemSetting Name="CSP.DefaultFileCharset" Value="UTF-8"/>
+      <AfterInstallMessage>Call do ##class(eshvarov.sample.SeaBattle.Game).Run() to start The Game!</AfterInstallMessage> 
     </Module>
     
   </Document>

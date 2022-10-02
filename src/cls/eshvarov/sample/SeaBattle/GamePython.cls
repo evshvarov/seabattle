@@ -1,4 +1,4 @@
-Class eshvarov.sample.SeaBattle.Game
+Class eshvarov.sample.SeaBattle.GamePython
 {
 
 Parameter BoardRange = 5;
@@ -9,24 +9,32 @@ Parameter ShipsStorage = "^Ships";
 
 Parameter BoardStorage = "^Board";
 
-ClassMethod Run() As %Status
+ClassMethod GetRounds() As %Integer
 {
-   w #,"Welcome to 'SEA BATTLE' game!"
-   w !,"There is a hidden ship. Try to find it in ",..#Rounds," rounds. Let's go!"
-   do ..SetupGame() 
-    for i=1:1:..#Rounds {
-        write !,"Round ",i
-        read !,"Please enter x:",x
-        read !,"And y:",y
-        do ..HitBoard(x,y)
-        do ..PrintBoard()
-        if ..CheckShip(x,y) {
-            write !,"You've sunk the ship! You win!"
-            quit 
-        }
-        w !,"You missed. Try again"
-    }
-    w !, "GAME OVER"
+    return ..#Rounds
+}
+
+ClassMethod Run() As %Status [ Language = python ]
+{
+    import iris
+    print("Welcome to 'SEA BATTLE' game!") 
+    print("\nThere is a hidden ship. Try to find it in "+str(iris.cls('eshvarov.sample.SeaBattle.GamePython').GetRounds())+" rounds. Let's go!")
+    iris.cls('eshvarov.sample.SeaBattle.GamePython').SetupGame()
+    #self.SetupGame()
+    win=0
+    for i in range(iris.cls('eshvarov.sample.SeaBattle.GamePython').GetRounds()): 
+        print("\nRound "+str(i)) 
+        x=input('\nPlease enter x:')
+        y=input('\nAnd y:')        
+        iris.cls('eshvarov.sample.SeaBattle.GamePython').HitBoard(x,y)
+        iris.cls('eshvarov.sample.SeaBattle.GamePython').PrintBoard()
+        if iris.cls('eshvarov.sample.SeaBattle.GamePython').CheckShip(x,y): 
+            print("\nYou've sunk the ship! You win! ")
+            win=1
+            break
+        print("You missed. Try again")
+    if win==0:
+        print("GAME OVER")
 }
 
 ClassMethod HitBoard(x, y) As %Status

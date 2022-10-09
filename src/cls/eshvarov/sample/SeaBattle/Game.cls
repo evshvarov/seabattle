@@ -27,6 +27,7 @@ ClassMethod Run() As %Status
         w !,"You missed. Try again"
     }
     w !, "GAME OVER"
+    return $$$OK
 }
 
 ClassMethod HitBoard(x, y) As %Status
@@ -72,6 +73,24 @@ ClassMethod PrintBoard() As %Status
         if '(i#..#BoardRange) w !
         set next=$Query(@next)
     }
+}
+
+ClassMethod PrintGlobal(gname) As %Status
+{
+
+    
+    set global=$Name(@gname)
+
+    set next=$Query(@global@(""))
+
+    for {
+    quit:next=""
+    
+    write !,next,@next
+
+    set next=$Query(@next)
+
+}
 }
 
 }

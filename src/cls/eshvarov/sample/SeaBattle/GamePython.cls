@@ -14,21 +14,26 @@ ClassMethod GetRounds() As %Integer
     return ..#Rounds
 }
 
+ClassMethod GetBoardStorage() As %String
+{
+    return ..#BoardStorage
+}
+
 ClassMethod Run() As %Status [ Language = python ]
 {
     import iris
     print("Welcome to 'SEA BATTLE' game!") 
-    print("\nThere is a hidden ship. Try to find it in "+str(iris.cls('eshvarov.sample.SeaBattle.GamePython').GetRounds())+" rounds. Let's go!")
-    iris.cls('eshvarov.sample.SeaBattle.GamePython').SetupGame()
+    print("\nThere is a hidden ship. Try to find it in "+str(iris.cls(__name__).GetRounds())+" rounds. Let's go!")
+    iris.cls(__name__).SetupGame()
     #self.SetupGame()
     win=0
-    for i in range(iris.cls('eshvarov.sample.SeaBattle.GamePython').GetRounds()): 
-        print("\nRound "+str(i)) 
+    for i in range(iris.cls(__name__)._GetParameter("Rounds")): 
+        print("\nRound "+str(i+1)) 
         x=input('\nPlease enter x:')
         y=input('\nAnd y:')        
-        iris.cls('eshvarov.sample.SeaBattle.GamePython').HitBoard(x,y)
-        iris.cls('eshvarov.sample.SeaBattle.GamePython').PrintBoard()
-        if iris.cls('eshvarov.sample.SeaBattle.GamePython').CheckShip(x,y): 
+        iris.cls(__name__).HitBoard(x,y)
+        iris.cls(__name__).PrintBoard()
+        if iris.cls(__name__).CheckShip(x,y): 
             print("\nYou've sunk the ship! You win! ")
             win=1
             break
@@ -37,49 +42,64 @@ ClassMethod Run() As %Status [ Language = python ]
         print("GAME OVER")
 }
 
-ClassMethod HitBoard(x, y) As %Status
+ClassMethod HitBoard(x, y) As %Status [ Language = python ]
 {
-    set @..#BoardStorage@(x,y)="X"
+    #set @..#BoardStorage@(x,y)="X"
+    import iris
+    bs=iris.gref(iris.cls(__name__).GetBoardStorage())
+    bs.set([x,y],"X")
 }
 
-ClassMethod CheckShip(x, y) As %Boolean
+ClassMethod CheckShip(x, y) As %Boolean [ Language = python ]
 {
-    if $D(^Ships(x,y)) return 1
-    return 0
+    import iris
+    bs=iris.gref(iris.cls(__name__)._GetParameter("ShipsStorage"))
+    if bs.data([x,y])==1:
+        result=1
+    else:
+        result=0
+    print(result)
+    return result
 }
 
-ClassMethod SetupGame() As %Status
+ClassMethod SetupGame() As %Status [ Language = python ]
 {
-    s ad=..#BoardStorage
-    k @..#BoardStorage
-    for x=1:1:..#BoardRange {
-        for y=1:1:..#BoardRange {
-            set @..#BoardStorage@(x,y)="O"
-        }
-    }
-    do ..HideShip()
+    import iris
+    bs=iris.gref(iris.cls(__name__)._GetParameter("BoardStorage"))
+    bs.kill([])
+    for x in range(iris.cls(__name__)._GetParameter("Rounds")):
+        for y in range(iris.cls(__name__)._GetParameter("Rounds")):
+            bs.set([x+1,y+1],"0")
+    iris.cls(__name__).HideShip()
 }
 
-ClassMethod HideShip() As %Status
+ClassMethod HideShip() As %Status [ Language = python ]
 {
-    kill ^Ships
-    set ^Ships($RANDOM(..#BoardRange)+1,$RANDOM(..#BoardRange)+1)=""
-    #; zw ^Ships
+    import iris
+    shipsgl=iris.gref(iris.cls(__name__)._GetParameter("ShipsStorage"))
+    shipsgl.kill([])
+    import random
+    board=iris.cls(__name__)._GetParameter("BoardRange")
+    x=random.randint(1,board)
+    y=random.randint(1,board)
+    #print(x,y)
+    shipsgl.set([x,y],1)
 }
 
-ClassMethod PrintBoard() As %Status
+ClassMethod PrintBoard() As %Status [ Language = python ]
 {
-    set Board=$Name(@..#BoardStorage)
-    set next=$Query(@Board@(""))
-    w !
-    for {
-        set i=$I(i)
-        quit:next=""
-        w:'(i#..#BoardRange=1) ","
-        write @next
-        if '(i#..#BoardRange) w !
-        set next=$Query(@next)
-    }
+    import iris
+    bs=iris.gref(iris.cls(__name__)._GetParameter("BoardStorage"))
+    st=""
+    print(st)
+    for (key,value) in bs.query([]):
+        if len(key)>1:
+            if int(key[1])<5:
+                st=st+str(value)+","
+            else:
+                st=st+str(value)
+                print(st)
+                st=""
 }
 
 }
